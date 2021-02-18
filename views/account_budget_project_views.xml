@@ -5,9 +5,9 @@
     -->
 
     <!-- Vista de busqueda -->
-    <record id="view_budget_post_search" model="ir.ui.view">
-        <field name="name">account.budget.post.search</field>
-        <field name="model">account.budget.post</field>
+    <record id="view_budget_project_post_search" model="ir.ui.view">
+        <field name="name">account.budget.post.project.search</field>
+        <field name="model">account.budget.post.project</field>
         <field name="arch" type="xml">
             <search string="Budgetary Position">
                 <field name="name" filter_domain="[('name','ilike',self)]" string="Budgetary Position"/>
@@ -17,9 +17,9 @@
     </record>
 
 <!-- Vista de arbol de posiciones presupuestarias -->
-    <record id="view_budget_post_tree" model="ir.ui.view">
-        <field name="name">account.budget.post.tree</field>
-        <field name="model">account.budget.post</field>
+    <record id="view_budget_project_post_tree" model="ir.ui.view">
+        <field name="name">account.budget.project.post.tree</field>
+        <field name="model">account.budget.post.project</field>
         <field name="arch" type="xml">
             <tree string="Budgetary Position">
                 <field name="name"/>
@@ -28,9 +28,9 @@
         </field>
     </record>
 
-    <record id="open_budget_post_form" model="ir.actions.act_window">
+    <record id="open_budget_project_post_form" model="ir.actions.act_window">
         <field name="name">Budgetary Positions</field>
-        <field name="res_model">account.budget.post</field>
+        <field name="res_model">account.budget.post.project</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree,kanban,form</field>
         <field name="view_id" ref="view_budget_post_tree"/>
@@ -39,9 +39,9 @@
 
 
 
-    <record model="ir.ui.view" id="view_budget_post_form">
-        <field name="name">account.budget.post.form</field>
-        <field name="model">account.budget.post</field>
+    <record model="ir.ui.view" id="view_budget_project_post_form">
+        <field name="name">account.budget.post.project.form</field>
+        <field name="model">account.budget.post.project</field>
         <field name="arch" type="xml">
             <form string="Budgetary Position">
                 <group col="4">
@@ -64,8 +64,8 @@
 
 <!-- Vista de lista- - > Formulario -->
     <record model="ir.ui.view" id="crossovered_budget_view_form">
-        <field name="name">crossovered.budget.view.form</field>
-        <field name="model">crossovered.budget</field>
+        <field name="name">crossovered.budget.project.view.form</field>
+        <field name="model">crossovered.budget.project</field>
         <field name="arch" type="xml">
             <form string="Budget">
                 <header>
@@ -152,9 +152,9 @@
         </field>
     </record>
 
-    <record model="ir.ui.view" id="crossovered_budget_view_tree">
-        <field name="name">crossovered.budget.view.tree</field>
-        <field name="model">crossovered.budget</field>
+    <record model="ir.ui.view" id="crossovered_budget_project_view_tree">
+        <field name="name">crossovered.budget.projectview.tree</field>
+        <field name="model">crossovered.budget.project</field>
         <field name="arch" type="xml">
 
             <tree decoration-info="state == 'draft'" decoration-muted="state in ('done','cancel')" string="Budget">
@@ -168,9 +168,9 @@
         </field>
     </record>
 
-    <record id="view_crossovered_budget_kanban" model="ir.ui.view">
-        <field name="name">crossovered.budget.kanban</field>
-        <field name="model">crossovered.budget</field>
+    <record id="view_crossovered_budget_project_kanban" model="ir.ui.view">
+        <field name="name">crossovered.budget.project.budget.kanban</field>
+        <field name="model">crossovered.budget.project</field>
         <field name="arch" type="xml">
             <kanban class="o_kanban_mobile">
                 <field name="name"/>
@@ -215,9 +215,9 @@
 
 
     <!-- Filtros personalizados por defecto en list -->
-    <record id="view_crossovered_budget_search" model="ir.ui.view">
-        <field name="name">crossovered.budget.search</field>
-        <field name="model">crossovered.budget</field>
+    <record id="view_crossovered_budget_project_search" model="ir.ui.view">
+        <field name="name">crossovered.budget.projectsearch</field>
+        <field name="model">crossovered.budget.project</field>
         <field name="arch" type="xml">
             <search string="Budget">
                 <field name="name" filter_domain="[('name','ilike',self)]" string="Budget"/>
@@ -230,13 +230,13 @@
         </field>
     </record>
 
-    <record model="ir.actions.act_window" id="act_crossovered_budget_view">
+    <record model="ir.actions.act_window" id="act_crossovered_budget_project_view">
         <field name="name">Budgets</field>
-        <field name="res_model">crossovered.budget</field>
+        <field name="res_model">crossovered.budget.project</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree,kanban,form</field>
-        <field name="view_id" ref="crossovered_budget_view_tree"/>
-        <field name="search_view_id" ref="view_crossovered_budget_search"/>
+        <field name="view_id" ref="crossovered_budget_project_view_tree"/>
+        <field name="search_view_id" ref="view_crossovered_budget_project_search"/>
         <!-- Filtro para ver solo los activos -->
         <!-- <field name="domain">[('state', '=', 'draft')]</field> -->
 
@@ -261,9 +261,9 @@
     </record>
 
 
-    <record id="view_crossovered_budget_line_search" model="ir.ui.view">
-        <field name="name">account.budget.line.search</field>
-        <field name="model">crossovered.budget.lines</field>
+    <record id="view_crossovered_budget_project_line_search" model="ir.ui.view">
+        <field name="name">crossovered.budget.project.lines.search</field>
+        <field name="model">crossovered.budget.project.lines</field>
         <field name="arch" type="xml">
             <search string="Budget Lines">
                 <field name="analytic_account_id"/>
@@ -271,9 +271,9 @@
         </field>
     </record>
 
-    <record model="ir.ui.view" id="view_crossovered_budget_line_tree">
-        <field name="name">crossovered.budget.line.tree</field>
-        <field name="model">crossovered.budget.lines</field>
+    <record model="ir.ui.view" id="view_crossovered_budget_project_line_tree">
+        <field name="name">crossovered.budget.project.lines.tree</field>
+        <field name="model">crossovered.budget.project.lines</field>
         <field name="arch" type="xml">
             <tree string="Budget Lines">
                 <field name="crossovered_budget_id" invisible="1"/>
@@ -289,9 +289,9 @@
             </tree>
         </field>
     </record>
-    <record model="ir.ui.view" id="view_crossovered_budget_line_form">
-        <field name="name">crossovered.budget.line.form</field>
-        <field name="model">crossovered.budget.lines</field>
+    <record model="ir.ui.view" id="view_crossovered_budget_project_line_form">
+        <field name="name">crossovered.budget.project.lines.form</field>
+        <field name="model">crossovered.budget.project.lines</field>
         <field name="arch" type="xml">
             <form string="Budget Lines">
                 <sheet>
@@ -316,23 +316,23 @@
 
 
     <!-- Domain para ser solo los que tienen estado activo -->
-    <record model="ir.actions.act_window" id="act_crossovered_budget_lines_view">
+    <record model="ir.actions.act_window" id="act_crossovered_budget_project_lines_view">
         <field name="name">Budgets</field>
-        <field name="res_model">crossovered.budget.lines</field>
+        <field name="res_model">crossovered.budget.project.lines</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
-        <field name="view_id" ref="view_crossovered_budget_line_tree"/>
+        <field name="view_id" ref="view_crossovered_budget_project_line_tree"/>
 
     </record>
 
 <!-- Menu Principal -->
-    <menuitem name="Presupuestos" id="account_budget.menu_root" groups="account.group_account_user"/>
+    <!-- <menuitem name="Presupuestos" id="account_budget.menu_root" groups="account.group_account_user"/> -->
 <!-- Categoria con action, solo es una etiqueta -->
-    <menuitem name="Lista de Presupuestos" id="account_budget.menu_1" parent="account_budget.menu_root"/>
+    <!-- <menuitem name="Lista de Presupuestos Proje" id="account_budget.menu_1" parent="account_budget.menu_root"/> -->
     
     <!-- <menuitem name="Presupuestos" action="open_budget_post_form" id="menu_budget_post_form" parent="account_budget.menu_1" sequence="5"/> -->
-    <menuitem parent="account_budget.menu_1" id="menu_act_crossovered_budget_view" name="PresuX" action="act_crossovered_budget_view" sequence="10" />
-    <menuitem parent="account_budget.menu_1" id="menu_act_crossovered_budget_lines_view"  name="Lines" action="act_crossovered_budget_lines_view" sequence="20"/>
+    <menuitem parent="account_budget.menu_1" id="menu_act_crossovered_project_budget_view" name="Presupuestos Por Proyecto" action="act_crossovered_budget_project_view" sequence="0" />
+    <menuitem parent="account_budget.menu_1" id="menu_act_crossovered_budget_lines_view"  name="Lines" action="act_crossovered_budget_project_lines_view" sequence="20"/>
 
 </odoo>
 

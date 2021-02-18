@@ -10,17 +10,17 @@ from datetime import datetime
 # ---------------------------------------------------------
 # Budgets
 # ---------------------------------------------------------
-class AccountBudgetPost(models.Model):
-    _name = "account.budget.post"
+class AccountBudgetPostProject(models.Model):
+    _name = "account.budget.post.project"
     _order = "name"
-    _description = "Budgetary Position"
+    _description = "Budgetary Position Project"
 
     name = fields.Char('Name', required=True)
     account_ids = fields.Many2many('account.account', 'account_budget_rel', 'budget_id', 'account_id', 'Accounts',
         domain=[('deprecated', '=', False)])
-    crossovered_budget_line = fields.One2many('crossovered.budget.lines', 'general_budget_id', 'Budget Lines')
+    crossovered_budget_line = fields.One2many('crossovered.budget.project.lines', 'general_budget_id', 'Budget Lines')
     company_id = fields.Many2one('res.company', 'Company', required=True,
-        default=lambda self: self.env['res.company']._company_default_get('account.budget.post'))
+        default=lambda self: self.env['res.company']._company_default_get('account.budget.post.project'))
 
     def _check_account_ids(self, vals):
         # Raise an error to prevent the account.budget.post to have not specified account_ids.
@@ -43,9 +43,9 @@ class AccountBudgetPost(models.Model):
         return super(AccountBudgetPost, self).write(vals)
 
 
-class CrossoveredBudget(models.Model):
-    _name = "crossovered.budget"
-    _description = "Budget"
+class CrossoveredBudgetProject(models.Model):
+    _name = "crossovered.budget.project"
+    _description = "Project Budget"
     _inherit = ['mail.thread']
 
     name = fields.Char('Budget Name', required=True, states={'done': [('readonly', True)]})
@@ -60,10 +60,10 @@ class CrossoveredBudget(models.Model):
         ('validate', 'Validated'),
         ('done', 'Done')
         ], 'Status', default='draft', index=True, required=True, readonly=True, copy=False, track_visibility='always')
-    crossovered_budget_line = fields.One2many('crossovered.budget.lines', 'crossovered_budget_id', 'Budget Lines',
+    crossovered_budget_line = fields.One2many('crossovered.budget.project.lines', 'crossovered_budget_id', 'Budget Lines',
         states={'done': [('readonly', True)]}, copy=True)
     company_id = fields.Many2one('res.company', 'Company', required=True,
-        default=lambda self: self.env['res.company']._company_default_get('account.budget.post'))
+        default=lambda self: self.env['res.company']._company_default_get('account.budget.post.project'))
 
     @api.multi
     def action_budget_confirm(self):
@@ -86,14 +86,14 @@ class CrossoveredBudget(models.Model):
         self.write({'state': 'done'})
 
 
-class CrossoveredBudgetLines(models.Model):
-    _name = "crossovered.budget.lines"
+class CrossoveredBudgetLinesProject(models.Model):
+    _name = "crossovered.budget.project.lines"
     _description = "Budget Line"
 
-    crossovered_budget_id = fields.Many2one('crossovered.budget', 'Budget', ondelete='cascade', index=True, required=True)
+    crossovered_budget_id = fields.Many2one('crossovered.budget.project', 'Budget', ondelete='cascade', index=True, required=True)
     analytic_account_id = fields.Many2one('account.analytic.account', 'Analytic Account')
     responsible_employee = fields.Many2one('res.users', 'Responsable del Presupuesto')
-    general_budget_id = fields.Many2one('account.budget.post', 'Budgetary Position', required=True)
+    general_budget_id = fields.Many2one('account.budget.post.project', 'Budgetary Position', required=True)
     date_from = fields.Date('Start Date', required=True)
     date_to = fields.Date('End Date', required=True)
     paid_date = fields.Date('Paid Date')
