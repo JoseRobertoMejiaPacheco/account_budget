@@ -16,7 +16,7 @@ class AccountBudgetPostProject(models.Model):
     _description = "Budgetary Position Project"
 
     name = fields.Char('Name', required=True)
-    account_ids = fields.Many2many('account.account', 'account_budget_rel', 'budget_id', 'account_id', 'Accounts',
+    account_ids = fields.Many2many('account.account', 'account_budget_project_rel', 'budget_id', 'account_id', 'Accounts',
         domain=[('deprecated', '=', False)])
     crossovered_budget_line = fields.One2many('crossovered.budget.project.lines', 'general_budget_id', 'Budget Lines')
     company_id = fields.Many2one('res.company', 'Company', required=True,
@@ -35,12 +35,12 @@ class AccountBudgetPostProject(models.Model):
     @api.model
     def create(self, vals):
         self._check_account_ids(vals)
-        return super(AccountBudgetPost, self).create(vals)
+        return super(AccountBudgetPostProject, self).create(vals)
 
     @api.multi
     def write(self, vals):
         self._check_account_ids(vals)
-        return super(AccountBudgetPost, self).write(vals)
+        return super(AccountBudgetPostProject, self).write(vals)
 
 
 class CrossoveredBudgetProject(models.Model):
@@ -48,17 +48,16 @@ class CrossoveredBudgetProject(models.Model):
     _description = "Project Budget"
     _inherit = ['mail.thread']
 
-    name = fields.Char('Budget Name', required=True, states={'done': [('readonly', True)]})
-    creating_user_id = fields.Many2one('res.users', 'Responsible', default=lambda self: self.env.user)
-    date_from = fields.Date('Start Date', required=True, states={'done': [('readonly', True)]})
-    date_to = fields.Date('End Date', required=True, states={'done': [('readonly', True)]})    
+    name = fields.Many2one('account.analytic.account', 'Nombre / Cuenta Analítica')
+    #name = fields.Char('Budget Name', required=True, states={'done': [('readonly', True)]})
+    creating_user_id = fields.Many2one('res.users', 'Responsable', default=lambda self: self.env.user)        
     active= fields.Boolean(default=True)
     state = fields.Selection([
-        ('draft', 'Draft'),
-        ('cancel', 'Cancelled'),
-        ('confirm', 'Confirmed'),
-        ('validate', 'Validated'),
-        ('done', 'Done')
+        ('draft', 'Borrador'),
+        ('cancel', 'Cancelado'),
+        ('confirm', 'Confirmado'),
+        ('validate', 'Validado'),
+        ('done', 'Hecho')
         ], 'Status', default='draft', index=True, required=True, readonly=True, copy=False, track_visibility='always')
     crossovered_budget_line = fields.One2many('crossovered.budget.project.lines', 'crossovered_budget_id', 'Budget Lines',
         states={'done': [('readonly', True)]}, copy=True)
@@ -90,41 +89,56 @@ class CrossoveredBudgetLinesProject(models.Model):
     _name = "crossovered.budget.project.lines"
     _description = "Budget Line"
 
-    crossovered_budget_id = fields.Many2one('crossovered.budget.project', 'Budget', ondelete='cascade', index=True, required=True)
-    analytic_account_id = fields.Many2one('account.analytic.account', 'Analytic Account')
-    responsible_employee = fields.Many2one('res.users', 'Responsable del Presupuesto')
-    general_budget_id = fields.Many2one('account.budget.post.project', 'Budgetary Position', required=True)
-    date_from = fields.Date('Start Date', required=True)
-    date_to = fields.Date('End Date', required=True)
-    paid_date = fields.Date('Paid Date')
-    planned_amount = fields.Float('Planned Amount', required=True, digits=0)
-    practical_amount = fields.Float(compute='_compute_practical_amount', string='Practical Amount', digits=0)    
-    percentage = fields.Float(compute='_compute_percentage', string='Achievement',store=True)
+    crossovered_budget_id = fields.Many2one('crossovered.budget.project', 'Presupuesto', ondelete='cascade', index=True, required=True)
+    # analytic_account_id = fields.Many2one('account.analytic.account', 'Analytic Account')
+    responsible_employee = fields.Many2one('res.users', 'Responsable de la Cuenta')
+    general_budget_id = fields.Many2one('account.budget.post.project', 'Posición Presupuestaria', required=True)        
+    paid_date = fields.Date('Fecha de Pago')
+    planned_amount = fields.Float('Importe Planeado', required=True, digits=0)
+    practical_amount = fields.Float(compute='_compute_practical_amount', string='Importe Real', digits=0)    
+    practical_amount2 = fields.Float(compute='_compute_percentage2', string='Logro', digits=0)    
     company_id = fields.Many2one(related='crossovered_budget_id.company_id', comodel_name='res.company',
         string='Company', store=True, readonly=True)
     forecast=fields.Float()
 
+    @api.multi
+    def _compute_percentage2(self):
+        #crossovered.budget.project.lines(1,)
+        
+        for line in self:
+            if line.practical_amount != 0.00:                
+                print("Real"+str(line.practical_amount))
+                print("Planeado"+str(line.planned_amount))
+                try:                    
+                    line.practical_amount2 = float((line.practical_amount*100)/line.planned_amount)
+                except:                    
+                    line.practical_amount2=0.0
+            else:
+                line.practical_amount2 = 0.00
+
+
 
     @api.multi
     def _compute_practical_amount(self):
+        #crossovered.budget.project.lines(1,)
+#print(self.crossovered_budget_id.name.id)
+        print(self)
         for line in self:
             result = 0.0
-            acc_ids = line.general_budget_id.account_ids.ids
-            date_to = self.env.context.get('wizard_date_to') or line.date_to
-            date_from = self.env.context.get('wizard_date_from') or line.date_from
+            acc_ids = line.general_budget_id.account_ids.ids            
             acc_ids_str=""
-            if line.analytic_account_id.id:                
+            if line.crossovered_budget_id.name.id:                
                 for item in acc_ids:
                     acc_ids_str=acc_ids_str+str(item)+','
                 acc_ids_str=acc_ids_str.rstrip(acc_ids_str[-1])
-            try:
-                
-                general_budget=self.env['account.move.line'].search([('date', '>=',date_from),('date', '<=',date_to),('account_id','in',acc_ids)])
+            try:                
+                general_budget=self.env['account.move.line'].search([('analytic_account_id', '=',line.crossovered_budget_id.name.id),('account_id','in',acc_ids)])
                 for item in general_budget:
                     result=result+item.credit-item.debit               
             except: result=0
                 
             line.practical_amount = result
+
     # @api.multi
     # def _compute_practical_amount(self):
     #     print(self)
@@ -146,8 +160,9 @@ class CrossoveredBudgetLinesProject(models.Model):
 
 
     @api.multi
-    def open_record(self):        
-        account_move_lines_filtered=self.env['account.move.line'].search([('date', '>=',self.date_from),('date', '<=',self.date_to),('account_id','in',self.general_budget_id.account_ids.ids)]).mapped('id')        
+    def open_record(self):
+        print(self)        
+        account_move_lines_filtered=self.env['account.move.line'].search([('analytic_account_id', '=',self.crossovered_budget_id.name.id),('account_id','in',self.general_budget_id.account_ids.ids)]).mapped('id')        
         return {
             'name':'Movimientos de: '+self.general_budget_id.display_name,
             'view_type': 'form',
@@ -158,15 +173,4 @@ class CrossoveredBudgetLinesProject(models.Model):
             'target':'current'
         }
 
-    @api.multi
-    def _compute_percentage(self):
-        for line in self:
-            if line.practical_amount != 0.00:
-                print("Real"+str(line.practical_amount))
-                print("Planeado"+str(line.planned_amount))
-                try:
-                    line.percentage = float((line.practical_amount*100)/line.planned_amount)
-                except:
-                    line.percentage=0.0
-            else:
-                line.percentage = 0.00
+
