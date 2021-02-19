@@ -3,4 +3,4 @@
 
 from . import account_budget
 from . import account_analytic_account
-from . import account_budget_project
+#from . import account_budget_project
