@@ -165,7 +165,7 @@ class CrossoveredBudgetLines(models.Model):
                 print("Real"+str(line.practical_amount))
                 print("Planeado"+str(line.planned_amount))
                 try:
-                    line.percentage = float((line.practical_amount*100)/line.planned_amount)
+                    line.percentage = abs(float((line.practical_amount*100)/line.planned_amount))
                 except:
                     line.percentage=0.0
             else:
