@@ -99,19 +99,18 @@
                 <notebook>
                     <page string="Budget Lines">
                         <field name="crossovered_budget_line"  colspan="4" nolabel="1" attrs="{'readonly':[('state','!=','draft')]}">
-                            <!-- <tree string="Budget Lines" decoration-success="practical_amount2&lt;=80" decoration-warning="practical_amount2&gt;=80" decoration-danger="practical_amount2&gt;=90"> -->
-                            <tree string="Budget Lines" >
+                            <tree string="Budget Lines" decoration-success="practical_amount2&lt;=80" decoration-warning="practical_amount2&gt;=80" decoration-danger="practical_amount2&gt;=90">
                                 <field name="general_budget_id"/>
                                 <!-- <field name="analytic_account_id" groups="analytic.group_analytic_accounting" required="1" string="Proyecto" /> -->
                                 <field name="responsible_employee" string="Responsable"/>                                
-                                <field name="forecast"/>
+                                
                                 <!-- <field name="date_from"/>
                                     <field name="date_to"/> -->
                                 <!-- <field name="paid_date" groups="base.group_no_one"/> -->
                                 <field name="planned_amount" sum="Planned Amount" widget="monetary" string="Importe Planeado"/>
                                 <field name="practical_amount" sum="Practical Amount" widget="monetary" string="Importe Real"/>
                                 <button name="open_record" string="Mov. CC" type="object" class="ok_button" mode="tree"/>
-                                <!-- <field name="practical_amount2"/> -->
+                                <field name="practical_amount2"/>
                             </tree>
                             <form string="Budget Lines">
                                 <group>
@@ -122,7 +121,7 @@
                                         <!-- <field name="analytic_account_id" groups="analytic.group_analytic_accounting" required="1"/> -->
                                     </group>
                                     <group>                                       
-                                        <field name="forecast"/>
+                                        
                                         <field name="paid_date" groups="base.group_no_one"/>
                                         <field name="company_id" options="{'no_create': True}" groups="base.group_multi_company"/>
                                     </group>
@@ -212,7 +211,7 @@
     </record>
 
     <record model="ir.actions.act_window" id="act_crossovered_budget_project_view">
-        <field name="name">Budgets1</field>
+        <field name="name">Budgets</field>
         <field name="res_model">crossovered.budget.project</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree,kanban,form</field>
@@ -263,7 +262,7 @@
                 <field name="paid_date" groups="base.group_no_one"/>
                 <field name="planned_amount" widget="monetary"/>
                 <field name="practical_amount" widget="monetary"/>
-                <!-- <field name="practical_amount2"/> -->
+                <field name="practical_amount2"/>
             </tree>
         </field>
     </record>
@@ -281,7 +280,7 @@
                         <field name="paid_date"/>
                         <field name="planned_amount" widget="monetary"/>
                         <field name="practical_amount" widget="monetary"/>
-                        <!-- <field name="practical_amount2"/> -->
+                        <field name="practical_amount2"/>
                         <field name="company_id" options="{'no_create': True}" groups="base.group_multi_company"/>
                     </group>
                 </sheet>
@@ -307,8 +306,8 @@
     <!-- <menuitem name="Lista de Presupuestos Proje" id="account_budget.menu_1" parent="account_budget.menu_root"/> -->
     
     <!-- <menuitem name="Presupuestos" action="open_budget_post_form" id="menu_budget_post_form" parent="account_budget.menu_1" sequence="5"/> -->
-    <menuitem parent="account_budget.menu_1" id="menu_act_crossovered_project_budget_view" name="Presupuestos Por Proyecto" action="act_crossovered_budget_project_view" sequence="19" />
-    <!-- <menuitem parent="account_budget.menu_1" id="menu_act_crossovered_budget_project_lines_view"  name="Lines" action="act_crossovered_budget_project_lines_view" sequence="21"/> -->
+    <menuitem parent="account_budget.menu_root" id="menu_act_crossovered_project_budget_view" name="Presupuestos por Proyecto" action="act_crossovered_budget_project_view" sequence="44" />
+    <!-- <menuitem parent="account_budget.menu_root" id="menu_act_crossovered_budget_project_lines_view"  name="Lines" action="act_crossovered_budget_project_lines_view" sequence="24"/> -->
 
 </odoo>
 

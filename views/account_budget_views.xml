@@ -328,11 +328,11 @@
 <!-- Menu Principal -->
     <menuitem name="Presupuestos" id="account_budget.menu_root" groups="account.group_account_user"/>
 <!-- Categoria con action, solo es una etiqueta -->
-    <menuitem name="Lista de Presupuestos" id="account_budget.menu_1" parent="account_budget.menu_root"/>
+    <menuitem parent="account_budget.menu_root" id="menu_act_crossovered_budget_view" name="Presupuestos Generales" action="act_crossovered_budget_view" sequence="44" />
     
     <!-- <menuitem name="Presupuestos" action="open_budget_post_form" id="menu_budget_post_form" parent="account_budget.menu_1" sequence="5"/> -->
-    <menuitem parent="account_budget.menu_1" id="menu_act_crossovered_budget_view" name="PresuX" action="act_crossovered_budget_view" sequence="10" />
-    <!-- <menuitem parent="account_budget.menu_1" id="menu_act_crossovered_budget_lines_view"  name="Lines" action="act_crossovered_budget_lines_view" sequence="20"/> -->
+    <!-- <menuitem name="RRR" parent="account_budget.menu_1" id="menu_act_crossovered_budget_view"  action="" sequence="10" /> -->
+    <!-- <menuitem parent="account_budget.menu_1" id="menu_act_crossovered_budget_lines_view"   action="act_crossovered_budget_lines_view" sequence="20"/> -->
 
 </odoo>
 
