@@ -16,7 +16,7 @@
         </field>
     </record>
 
-<!-- Vista de arbol de posiciones presupuestarias -->
+    <!-- Vista de arbol de posiciones presupuestarias -->
     <record id="view_budget_project_post_tree" model="ir.ui.view">
         <field name="name">account.budget.project.post.tree</field>
         <field name="model">account.budget.post.project</field>
@@ -62,7 +62,7 @@
         </field>
     </record>
 
-<!-- Vista de lista- - > Formulario -->
+    <!-- Vista de lista- - > Formulario -->
     <record model="ir.ui.view" id="crossovered_budget_project_view_form">
         <field name="name">crossovered.budget.project.view.form</field>
         <field name="model">crossovered.budget.project</field>
@@ -84,7 +84,7 @@
                     </h1>
                 </div>
                 <group>
-                <div class="oe_button_box" name="button_box">
+                    <div class="oe_button_box" name="button_box">
                         <button name="toggle_active" type="object" class="oe_stat_button" icon="fa-archive">
                             <field name="active" widget="boolean_button" options="{&quot;terminology&quot;: &quot;archive&quot;}"/>
                         </button>
@@ -95,33 +95,37 @@
                     <group>
                         <field name="company_id" groups="base.group_multi_company" options="{'no_create': True}"/>
                     </group>
+                    <group>
+                        <field name="other_currency" />
+                    </group>
                 </group>
-                <notebook>
+                <!-- <notebook>
                     <page string="Budget Lines">
-                        <field name="crossovered_budget_line"  colspan="4" nolabel="1" attrs="{'readonly':[('state','!=','draft')]}">
+                        <field name="crossovered_budget_line" colspan="4" nolabel="1" attrs="{'readonly':[('state','!=','draft')]}">
                             <tree string="Budget Lines" decoration-success="practical_amount2&lt;=80" decoration-warning="practical_amount2&gt;=80" decoration-danger="practical_amount2&gt;=90">
                                 <field name="general_budget_id"/>
-                                <!-- <field name="analytic_account_id" groups="analytic.group_analytic_accounting" required="1" string="Proyecto" /> -->
-                                <field name="responsible_employee" string="Responsable"/>                                
-                                
-                                <!-- <field name="date_from"/>
-                                    <field name="date_to"/> -->
-                                <!-- <field name="paid_date" groups="base.group_no_one"/> -->
+
+                                <field name="responsible_employee" string="Responsable" />
+                                <field name="other_currency_project_enabled"/>
+                                <field name="multiline_test" />
+                                <button name="open_record" string="Mov. CC" type="object" class="ok_button" mode="tree"/>
                                 <field name="planned_amount" sum="Planned Amount" widget="monetary" string="Importe Planeado"/>
                                 <field name="practical_amount" sum="Practical Amount" widget="monetary" string="Importe Real"/>
-                                <button name="open_record" string="Mov. CC" type="object" class="ok_button" mode="tree"/>
+                                <field name="currency_line" />
                                 <field name="practical_amount2"/>
-                            </tree>
+                            </tree>                             
                             <form string="Budget Lines">
                                 <group>
                                     <group>
                                         <field name="general_budget_id"/>
                                         <field name="responsible_employee" />
                                         <field name="planned_amount" widget="monetary"/>
-                                        <!-- <field name="analytic_account_id" groups="analytic.group_analytic_accounting" required="1"/> -->
+                                        <field name="currency_line" />
+                                        <field name="other_currency_project_enabled" />
+                                        <field name="multiline_test" />
                                     </group>
-                                    <group>                                       
-                                        
+                                    <group>
+
                                         <field name="paid_date" groups="base.group_no_one"/>
                                         <field name="company_id" options="{'no_create': True}" groups="base.group_multi_company"/>
                                     </group>
@@ -129,13 +133,49 @@
                             </form>
                         </field>
                     </page>
+                </notebook> -->
+                 <notebook>
+                    <page string="Budget Lines" attrs="{'invisible':[('other_currency','=',True)]}">
+                        <field name="crossovered_budget_line" colspan="4" nolabel="1" attrs="{'readonly':[('state','!=','draft')]}">
+                            <tree string="Budget Lines" decoration-success="practical_amount2&lt;=80" decoration-warning="practical_amount2&gt;=80" decoration-danger="practical_amount2&gt;=90">
+                                <field name="general_budget_id"/>
+
+                                <field name="responsible_employee" string="Responsable"/>
+                                <field name="other_currency_project_enabled"/>
+                                <field name="multiline_test" />
+                                <button name="open_record" string="Mov. CC" type="object" class="ok_button" mode="tree"/>
+                                <field name="planned_amount" sum="Planned Amount" widget="monetary" string="Importe Planeado"/>
+                                <field name="practical_amount" sum="Practical Amount" widget="monetary" string="Importe Real"/>
+                                <field name="currency_line"/>
+                                <field name="practical_amount2"/>
+                            </tree>                             
+                            <form string="Budget Lines">
+                                <group>
+                                    <group>
+                                        <field name="general_budget_id"/>
+                                        <field name="responsible_employee" />
+                                        <field name="planned_amount" widget="monetary"/>
+                                        <field name="currency_line"/>
+                                        <field name="other_currency_project_enabled" />
+                                        <field name="multiline_test" />
+                                    </group>
+                                    <group>
+
+                                        <field name="paid_date" groups="base.group_no_one"/>
+                                        <field name="company_id" options="{'no_create': True}" groups="base.group_multi_company"/>
+                                    </group>
+                                </group>
+                            </form>
+                        </field>
+                    </page>
+                
                 </notebook>
                 <!-- </sheet> -->
                 <div class="oe_chatter">
                     <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
                     <field name="message_ids" widget="mail_thread"/>
                 </div>
-            </form>
+            </form>            
         </field>
     </record>
 
@@ -145,7 +185,7 @@
         <field name="arch" type="xml">
 
             <tree decoration-info="state == 'draft'" decoration-muted="state in ('done','cancel')" string="Budget">
-                <field name="name" colspan="1"/>                                
+                <field name="name" colspan="1"/>
                 <field name="company_id" options="{'no_create': True}" groups="base.group_multi_company"/>
                 <field name="creating_user_id" string="Creado por:"/>
                 <field name="state" />
@@ -179,7 +219,7 @@
                             <div class="row">
                                 <div class="col-xs-10">
                                     <i class="fa fa-clock-o"/>
-                                    
+
                                 </div>
                                 <div class="col-xs-2">
                                     <span class="pull-right">
@@ -256,9 +296,8 @@
         <field name="model">crossovered.budget.project.lines</field>
         <field name="arch" type="xml">
             <tree string="Budget Lines">
-                <field name="crossovered_budget_id" invisible="1"/>
+                <field name="crossovered_budget_id"/>
                 <field name="general_budget_id"/>
-                <!-- <field name="analytic_account_id" groups="analytic.group_analytic_accounting"/> -->
                 <field name="paid_date" groups="base.group_no_one"/>
                 <field name="planned_amount" widget="monetary"/>
                 <field name="practical_amount" widget="monetary"/>
@@ -275,7 +314,6 @@
                     <group col="4">
                         <field name="responsible_employee" />
                         <field name="crossovered_budget_id"/>
-                        <!-- <field name="analytic_account_id"/> -->
                         <field name="general_budget_id"/>
                         <field name="paid_date"/>
                         <field name="planned_amount" widget="monetary"/>
@@ -300,14 +338,14 @@
 
     </record>
 
-<!-- Menu Principal -->
+    <!-- Menu Principal -->
     <!-- <menuitem name="Presupuestos" id="account_budget.menu_root" groups="account.group_account_user"/> -->
-<!-- Categoria con action, solo es una etiqueta -->
+    <!-- Categoria con action, solo es una etiqueta -->
     <!-- <menuitem name="Lista de Presupuestos Proje" id="account_budget.menu_1" parent="account_budget.menu_root"/> -->
-    
+
     <!-- <menuitem name="Presupuestos" action="open_budget_post_form" id="menu_budget_post_form" parent="account_budget.menu_1" sequence="5"/> -->
     <menuitem parent="account_budget.menu_root" id="menu_act_crossovered_project_budget_view" name="Presupuestos por Proyecto" action="act_crossovered_budget_project_view" sequence="44" />
-    <!-- <menuitem parent="account_budget.menu_root" id="menu_act_crossovered_budget_project_lines_view"  name="Lines" action="act_crossovered_budget_project_lines_view" sequence="24"/> -->
+    <!-- <menuitem parent="account_budget.menu_root" id="menu_act_crossovered_budget_project_lines_view" name="Lines" action="act_crossovered_budget_project_lines_view" sequence="24"/> -->
 
 </odoo>
 
