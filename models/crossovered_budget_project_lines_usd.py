@@ -19,7 +19,7 @@ class CrossoveredBudgetLinesProjectUSD(models.Model):
     general_budget_id = fields.Many2one('account.budget.post.project', 'Posición Presupuestaria', required=True)
     paid_date = fields.Date('Fecha de Pago')        
     practical_amount2 = fields.Float(
-        compute='_compute_percentage_usd', string='Logro', digits=0)
+        compute='_compute_percentage_usd', string='Logro')
     company_id = fields.Many2one(related='crossovered_budget_id.company_id', comodel_name='res.company',
                                  string='Company', store=True, readonly=True)
 
@@ -62,12 +62,13 @@ class CrossoveredBudgetLinesProjectUSD(models.Model):
         # crossovered.budget.project.lines(1,)
 
         for line in self:
-            if line.practical_amount != 0.00:
-                print("Real"+str(line.practical_amount))
-                print("Planeado"+str(line.planned_amount))
+            if line.practical_amount_mxn != 0.00:
+                print("Real"+str(line.practical_amount_mxn))
+                print("Planeado"+str(line.planned_amount_mxn))
                 try:
                     line.practical_amount2 = abs(float(
-                        (line.practical_amount*100)/line.planned_amount))
+                        (line.practical_amount_mxn*100)/line.planned_amount_mxn))
+                    print(line.practical_amount2)
                 except:
                     line.practical_amount2 = 0.0
             else:

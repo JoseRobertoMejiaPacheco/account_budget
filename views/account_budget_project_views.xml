@@ -97,27 +97,20 @@
                     </group>
 
                 </group>
-                <!-- Con name puedes mandar llamar un método name="pruebas" type="object" -->
-                <!-- para mostrar información se puede porner statinfo -->
-                <div class="oe_button_box" name="button_box2">
-                    <button name="hola" type="object" class="oe_stat_button" icon="fa-usd" readonly="True">
-                        <field name="other_currency" widget="boolean_button" options='{"terminology": {"string_true": "USD", "hover_false": "USD","string_false": "MXN", "hover_true": "MXN"}}'/>
-                    </button>
-                </div>
-                <div>
+                
+                
                     <div>
-                        <label for="tasa_usd" string="Tasa de Cambio" attrs="{'invisible':[('other_currency','=',False)]}"/>
+                        <label for="tasa_usd" string="Tasa de Cambio" />
 
-                        <field name="tasa_usd" attrs="{'invisible':[('other_currency','=',False)]}"/>
-                    </div>
-                    <div>
+                        <field name="tasa_usd" />
+                                        
                         
                        
                     </div>
   
-                </div>
-                 <label for="computado" string="1 USD equivale a " attrs="{'invisible':[('other_currency','=',False)]}"/>
-                        <field name="computado" attrs="{'invisible':[('other_currency','=',False)]}" /><label  string=" MXN" attrs="{'invisible':[('other_currency','=',False)]}"/>
+                
+                 <label for="computado" string="1 USD equivale a " />
+                        <field name="computado" /><label  string=" MXN" />
                 <notebook>
 
 
@@ -133,7 +126,7 @@
 
 
 
-                    <page string="Presupuesto en USD" attrs="{'invisible':[('other_currency','=',False)]}">
+                    <page string="Presupuesto en USD" >
                         <field name="crossovered_budget_line_usd" colspan="4" nolabel="1" attrs="{'readonly':[('state','!=','draft')]}">
                             <tree string="Budget Lines" decoration-success="practical_amount2&lt;=80" decoration-warning="practical_amount2&gt;=80" decoration-danger="practical_amount2&gt;=90">
                                 <field name="general_budget_id"/>
@@ -165,41 +158,6 @@
                             </form>
                         </field>
                     </page>
-
-
-
-
-
-
-
-
-                    <page string="Presupuesto en MXN" attrs="{'invisible':[('other_currency','=',True)]}">
-                        <field name="crossovered_budget_line" colspan="4" nolabel="1" attrs="{'readonly':[('state','!=','draft')]}">
-                            <tree string="Budget Lines" decoration-success="practical_amount2&lt;=80" decoration-warning="practical_amount2&gt;=80" decoration-danger="practical_amount2&gt;=90">                            
-                                <field name="general_budget_id"/>
-                                <field name="responsible_employee" string="Responsable"/>
-                                <button name="open_record" string="Mov. CC" type="object" class="ok_button" mode="tree"/>
-                                <field name="planned_amount" sum="Planned Amount" widget="monetary" string="Importe Planeado"/>
-                                <field name="practical_amount" sum="Practical Amount" widget="monetary" string="Importe Real"/>
-                                <field name="practical_amount2"/>
-                            </tree>
-                            <form string="Budget Lines">
-                                <group>
-                                    <group>
-                                        <field name="general_budget_id"/>
-                                        <field name="responsible_employee" />
-                                        <field name="planned_amount" widget="monetary"/>
-                                    </group>
-                                    <group>
-
-                                        <field name="paid_date" groups="base.group_no_one"/>
-                                        <field name="company_id" options="{'no_create': True}" groups="base.group_multi_company"/>
-                                    </group>
-                                </group>
-                            </form>
-                        </field>
-                    </page>
-
 
 
 

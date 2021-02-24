@@ -20,7 +20,7 @@ class AccountBudgetPostProject(models.Model):
     account_ids = fields.Many2many('account.account', 'account_budget_project_rel', 'budget_id', 'account_id', 'Accounts',
                                    domain=[('deprecated', '=', False)])
     crossovered_budget_line = fields.One2many(
-        'crossovered.budget.project.lines', 'general_budget_id', 'Budget Lines')
+        'crossovered.budget.project.lines.usd', 'general_budget_id', 'Budget Lines')
     company_id = fields.Many2one('res.company', 'Company', required=True,
                                  default=lambda self: self.env['res.company']._company_default_get('account.budget.post.project'))
     company_id = fields.Many2one('res.company', 'Company', required=True,

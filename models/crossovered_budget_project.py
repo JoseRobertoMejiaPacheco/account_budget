@@ -14,8 +14,7 @@ class CrossoveredBudgetProject(models.Model):
 
     name = fields.Many2one('account.analytic.account',
                            'Nombre / Cuenta Analítica')
-    other_currency = fields.Boolean(
-        'Cotización en USD', required=True, default=False)
+    
     tasa_usd = fields.Many2one('res.currency.rate',
                                'Tasa de cambio USD')            
     creating_user_id = fields.Many2one(
@@ -62,6 +61,4 @@ class CrossoveredBudgetProject(models.Model):
     def action_budget_done(self):
         self.write({'state': 'done'})
     
-    @api.multi
-    def hola(self):
-        self.write({'other_currency': not self.other_currency})
+  
