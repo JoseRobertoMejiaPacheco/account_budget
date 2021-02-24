@@ -107,13 +107,10 @@
                     <page string="Budget Lines">
                         <field name="crossovered_budget_line" context="{'default_date_from': date_from,'default_date_to': date_to}" colspan="4" nolabel="1" attrs="{'readonly':[('state','!=','draft')]}">
                             <tree string="Budget Lines" decoration-success="percentage&lt;=80" decoration-warning="percentage&gt;=80" decoration-danger="percentage&gt;=90">
+                            
                                 <field name="general_budget_id"/>
-                                <field name="responsible_employee" />
-                                <!-- <field name="analytic_account_id" groups="analytic.group_analytic_accounting" required="1"/> -->
+                                <field name="responsible_employee" />                                
                                 <field name="forecast"/>
-                                <!-- <field name="date_from"/>
-                                    <field name="date_to"/> -->
-                                <!-- <field name="paid_date" groups="base.group_no_one"/> -->
                                 <field name="planned_amount" sum="Planned Amount" widget="monetary"/>
                                 <field name="practical_amount" sum="Practical Amount" widget="monetary"/>
                                 <button name="open_record" string="Mov. CC" type="object" class="ok_button" mode="tree"/>
